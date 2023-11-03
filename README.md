@@ -1,15 +1,12 @@
-# Custom ChatGPT Bot with Redis Search and Python Flask
+# Industry specific Chatbot using OpenAI LLM api's and Redis Database. 
 Starting template for a the Custom ChatGPT Chatbot Application. 
 
-This repository provides a comprehensive guide for building a custom ChatGPT chatbot powered by your data, Redis Search, and the OpenAI Cookbook, all integrated into a Python Flask application.
+This repository provides a comprehensive guide for building a custom chatbot powered by your data, Redis Search, and the openAI API's, all integrated into a Python Flask application.
 
-Learn how to set up a Redis Stack server, create and manage a Redis Search index, and integrate ChatGPT to provide accurate and relevant responses based on your data. This guide covers deployment using both Docker and virtual servers.
+This youtube guide will act as a good starting point for your Industry Specific Chatbot
 
 ## YouTube Channel
 Check out out [YouTube Channel here](https://www.youtube.com/c/SkoloOnline)
-
-Checkout the video
-[Video Detailing How To Use This Repo](https://youtu.be/fEHHK6-ix3c)
 
 ## Set up the project
 Start by installing virtual environment if you do not already have it.
@@ -28,8 +25,9 @@ souce chatgptenv/bin/activate
 ```
 
 ## Create a folder called data
-Save your PDF files in there, note this project will only work with PDF files. Watch the video to see how you can customise the code for othe rinput types. 
+Put your PDF files in there, note this project will only work with PDF files. Can also work with text and csv files. Use Langchain dataloader to make it work with your desired format. 
 
+https://python.langchain.com/docs/integrations/document_loaders/ 
 ## Install required python packages
 
 ```sh
