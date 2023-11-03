@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Demo version of Sabin's personal ChatGPT.">
+
+    <title>Sabin Chat-GPT</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <style>
+      body {
+        background-color: #F4F6F6;
+      }
+      .chat-card {
+        border-radius: 15px;
+        background-color: #fff;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+      }
+      .chat-header {
+        font-weight: 700;
+        color: #31708F;
+        background-color: #D9EDF7;
+        padding: 15px;
+        border-radius: 15px 15px 0 0;
+      }
+      .chat-content {
+        padding: 15px;
+        height: 400px;
+        overflow-y: auto;
+      }
+      .chat-footer {
+        padding: 15px;
+        border-top: 1px solid #ddd;
+        border-radius: 0 0 15px 15px;
+      }
+      .chat-message {
+        margin-bottom: 15px;
+      }
+      .chat-message:last-child {
+        margin-bottom: 0;
+      }
+      .navbar {
+        background-color: orange !important;
+      }
+      .chat-header {
+        font-weight: 700;
+        color: #fff;  /* Changing text color to white for better visibility on orange background */
+        background-color: orange;  /* Changing header color to orange */
+        padding: 15px;
+        border-radius: 15px 15px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- Chat Card -->
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+          <div class="card chat-card">
+            <div class="card-header chat-header">Sabin's Personal ChatGPT</div>
+            <div class="card-body chat-content" id="list-group">
+              <!-- Messages will be added here dynamically -->
+              <div id="typing" style="display: none;">
+                <img src="https://img.freepik.com/free-vector/loading-icon_167801-434.jpg?size=338&ext=jpg" height="20" class="me-3">
+                <span>Chatbot is typing...</span>
+              </div>
+            </div>
+            <div class="card-footer chat-footer">
+              <div class="input-group">
+                <input type="text" class="form-control" id="chat-input" placeholder="Type your question here...">
+                <button class="btn btn-primary" id="gpt-button">Ask SabinGPT</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script Links -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    
+    <!-- Adjusted JS for new structure -->
+    <script>
+      $(document).ready(function() {
+
+          function processInput() {
+              var question = $("#chat-input").val();
+              var html_data = '<div class="chat-message d-flex justify-content-end mb-3">';
+              html_data += '<div class="msg_container_send d-flex align-items-center">';
+              html_data += '<img src="https://cdn.icon-icons.com/icons2/806/PNG/512/chat-39_icon-icons.com_65956.png" alt="Message" height="35" class="me-3">';
+              html_data += '<p class="mb-0">' + question + '</p>';
+              html_data += '</div></div>';
+
+              $("#chat-input").val('');
+              $(".chat-content").append(html_data);
+              // Show typing indicator
+              $("#typing").show();
+
+              $.ajax({
+                  type: "POST",
+                  url: "/",
+                  data: {
+                      'prompt': question
+                  },
+                  success: function(data) {
+                      // Hide typing indicator
+                      $("#typing").hide();
+                      var gpt_data = '<div class="chat-message d-flex justify-content-start mb-3">';
+                      gpt_data += '<img src="https://images.squarespace-cdn.com/content/v1/54e8e371e4b0a0f14f94aa82/3e8da31d-623f-4179-8013-09a086ee21fe/sabin.png" alt="Robot" height="35" class="me-3">';
+                      gpt_data += '<div class="msg_container">';
+                      gpt_data += '<p>' + data.answer + '</p>';
+                      gpt_data += '</div></div>';
+
+                      $(".chat-content").append(gpt_data);
+                      $(".chat-content").scrollTop($(".chat-content")[0].scrollHeight);
+                  }
+              });
+          }
+
+          $("#gpt-button").click(function() {
+              processInput();
+          });
+
+          $('#chat-input').keypress(function(event){
+              var keycode = (event.keyCode ? event.keyCode : event.which);
+              if(keycode == '13'){
+                  processInput();
+              }
+          });
+      });
+  </script>
+
+</body>
+</html>
